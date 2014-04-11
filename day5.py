@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 import urllib2
 import httplib
+import urllib
+import pickle
 
 """
 python challenge puzzle
