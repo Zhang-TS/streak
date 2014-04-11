@@ -40,6 +40,29 @@ def q3_recognize_c():
 
 print q3_recognize_c()
 
+def q4_equality():
+	response = urllib2.urlopen("http://www.pythonchallenge.com/pc/def/equality.html")
+	page_source = response.read()
+	page_source = page_source.split('<!--')[1]
+
+	s = page_source[0:9]
+	slist = []
+	for c in page_source[9:]:
+		if not c.isalpha():
+			continue
+		if exactly(s):
+			if s not in slist:
+				slist.append(s)
+		s = s[1:]
+		s += c
+	url = ''
+	for c in slist:
+		url += c[4]
+
+	check_url(url)
+
+	print slist
+
 def exactly(s):
 	if s[0].islower() and s[8].islower() and s[1:4].isupper() and s[5:8].isupper() and s[4].islower():
 		return True
@@ -47,33 +70,22 @@ def exactly(s):
 		return False
 
 def check_url(s):
-	#s = s.lower()
-	url = "www.pythonchallenge.com"
-	path = "/pc/def/"+s+".html"
+	print s
+	url="www.pythonchallenge.com"
+	path="/pc/def/"+s+".html"
+
+	print path
+
 	try:
 		conn = httplib.HTTPConnection(url)
 		conn.request("HEAD", path)
 		if conn.getresponse().status == 200:
-			print s
+			print "ok"
+			return True
 	except StandardError:
-		pass	
-	
-def q4_small_letter():
-	response = urllib2.urlopen("http://www.pythonchallenge.com/pc/def/equality.html")
-	page_source = response.read()
-	page_source = page_source.split('<!--')[1]
-	s = page_source[0:9]
-	slist=[]
-	for c in page_source[9:]:
-		if not c.isalpha():
-			continue
-		if exactly(s):
-			if s not in slist:
-				slist.append(s)
-				#check_url(s)
-				print s
-		s = s[1:]
-		s += c
+		pass
+
+	return False
 
 def check_url_2(url, params, method="GET"):
 	if method == "POST":
@@ -129,9 +141,14 @@ def q6_peak():
 	print len(result)
 
 	for c in result:
-		s = []
+		s = ""
 		for k in c:
-			s.append(k[1])
+			if k[0] == " ":
+				for i in range(k[1]):
+					s += " "
+			else:
+				for i in range(k[1]):
+					s += "#"
 		
 		print s
 
