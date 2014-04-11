@@ -74,4 +74,65 @@ def q4_small_letter():
 				print s
 		s = s[1:]
 		s += c
-q4_small_letter()
+
+def check_url_2(url, params, method="GET"):
+	if method == "POST":
+		return urllib2.urlopen(url, data=urllib.urlencode(params))
+	else:
+		print "get "+url+"?"+urllib.urlencode(params)
+		return urllib2.urlopen(url + "?" + urllib.urlencode(params))
+
+
+def q5_linkedlist():
+	url = "http://www.pythonchallenge.com/pc/def/linkedlist.php"
+	number ="25357"
+
+	while number.isdigit():
+
+		params = {"nothing":number}
+		response = check_url_2(url,params)
+		f = response.read()
+
+		print f
+
+		for s in f.split():
+			if s.isdigit():
+				number = s
+				print "number :" + number
+
+	'''
+	print "final number: " + number
+	
+	n = 16044
+	while n > 0:
+		n = n/2
+		number = str(n)
+
+		params = {"nothing":number}
+		response = check_url_2(url, params)
+
+		print response.read()
+	'''
+
+	'''
+	hints: finally get 66831!
+	'''
+
+def q6_peak():
+	try:
+		with open('./banner.p', 'r') as rfile:
+			result = pickle.load(rfile)
+
+	except IOError as ioerr:
+		print ioerr
+
+	print len(result)
+
+	for c in result:
+		s = []
+		for k in c:
+			s.append(k[1])
+		
+		print s
+
+q6_peak()
