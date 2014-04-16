@@ -1,46 +1,32 @@
 #! /usr/bin/env python
+
 import urllib2
-import httplib
 import urllib
+import httplib
 import pickle
+from PIL import Image
+import numpy as np
+import zipfile
+import os.path
+import bz2
 
-"""
-python challenge puzzle
-day5
-day6
-"""
-def q1_power():
-	return 2**38
-
-print q1_power()
-
-def q2_encryption(input):
-	output = ""
-	for c in input:
-		if c.isalpha():
-			s = ord(c)+2
-			if s > ord('z'):
-				s = s -26
-			c = chr(s)
-		output+=c
-	return output
-
-l = 'g fmnc wms bgblr rpylqjyrc gr zw fylb. rfyrq ufyr amknsrcpq ypc dmp. bmgle gr gl zw fylb gq glcddgagclr ylb rfyr\'q ufw rfgq rcvr gq qm jmle. sqgle qrpgle.kyicrpylq() gq pcamkkclbcb. lmu ynnjw ml rfc spj.'
-url = 'map'
-
-print q2_encryption(url)
-
-def q3_recognize_c():
+def q3_orc():
 	response = urllib2.urlopen("http://www.pythonchallenge.com/pc/def/ocr.html")
 	page_source = response.read()
 	page_source = page_source.split('<!--')[2]
-	s = ""
-	for c in page_source:
-		if c.isalpha():
-			s += c
-	print s
 
-print q3_recognize_c()
+	cha =[]
+	idx =[]
+	for c in page_source:
+		if c not in cha:
+			cha.append(c)
+			idx.append(1)
+		else:
+			idx[cha.index(c)] += 1
+
+	result = zip(cha, idx)
+
+	print result
 
 def q4_equality():
 	response = urllib2.urlopen("http://www.pythonchallenge.com/pc/def/equality.html")
@@ -142,6 +128,7 @@ def q6_peak():
 
 	print len(result)
 
+
 	for c in result:
 		s = ""
 		for k in c:
@@ -154,4 +141,62 @@ def q6_peak():
 		
 		print s
 
-q6_peak()
+
+def q7_channel():
+	zip_file = zipfile.ZipFile(open('./channel.zip', 'r'))
+
+
+	nothing = '90052'
+	comments = []
+	while True:
+		if os.path.isfile(os.path.join('./channel/', nothing+'.txt')):
+			raw_data = zip_file.read(nothing+'.txt')
+
+			print raw_data
+
+			comments.append(zip_file.getinfo(nothing+'.txt').comment)
+			nothing = raw_data.split()[-1]
+		else:
+			break
+
+	print "".join(comments)
+
+
+
+def q8_oxygen():
+	img = Image.open('./oxygen.png').convert('L')
+
+	width, height = img.size
+
+	mid_h = height/2
+
+	img_data = np.asarray(img, dtype=int)
+
+	row = img_data[mid_h, 0:width-21].tolist()
+
+	row.insert(0, 115)
+	row.insert(0, 115)
+	
+	s = ""
+	for k in range(0, width-21, 7):
+		s += (chr(row[k]))
+
+	s1 = s.split("[")[1]
+	s2 = s1.split("]")[0]
+
+	print s2
+
+	result =""
+	for k in s2.split(","):
+		result += chr(int(k))
+
+	print result
+
+def q9_integrity():
+	name = "BZh91AY&SYA\xaf\x82\r\x00\x00\x01\x01\x80\x02\xc0\x02\x00 \x00!\x9ah3M\x07<]\xc9\x14\xe1BA\x06\xbe\x084"
+	pas = "BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08"
+
+	print bz2.decompress(name)
+	print bz2.decompress(pas)
+
+q9_integrity()
