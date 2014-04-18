@@ -7,7 +7,15 @@ class PizzaStore(object):
 
 	def orderPizza(self, type):
 
+		'''This is the trick:
+		createPizza method is impelemented by the concrete 
+		subclasses spesified to its type of product
+		'''
 		pizza = self.createPizza(type)
+
+		'''here we actually work on different types of pizza alr
+		depends on what type of pizza is created by the subclasses
+		'''
 		pizza.prepare()
 		pizza.bake()
 		pizza.cut()
