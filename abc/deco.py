@@ -29,3 +29,4 @@ print 'Implementation.value: ', i.value
 
 i.value = 'New value'
 print 'Changed value: ', i.value
+
