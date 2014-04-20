@@ -9,6 +9,7 @@ import numpy as np
 import zipfile
 import os.path
 import bz2
+import matplotlib.pyplot as plt
 
 def q3_orc():
 	response = urllib2.urlopen("http://www.pythonchallenge.com/pc/def/ocr.html")
@@ -199,4 +200,58 @@ def q9_integrity():
 	print bz2.decompress(name)
 	print bz2.decompress(pas)
 
-q9_integrity()
+def q10_good():
+	url = "http://www.pythonchallenge.com/pc/return/good.html"
+	username='huge'
+	password='file'
+	p = urllib2.HTTPPasswordMgrWithDefaultRealm()
+
+	p.add_password(None, url, username, password)
+
+	handler = urllib2.HTTPBasicAuthHandler(p)
+	opener = urllib2.build_opener(handler)
+	urllib2.install_opener(opener)
+
+	response = urllib2.urlopen(url)
+	page_source = response.read()
+	page_source = page_source.split('first:')[1]
+
+	page_source = page_source.split('second:')
+	first = page_source[0]
+	second = page_source[1]
+
+	#store the numbers
+	first_list = []	
+	for k in first.split():
+		for n in k.split(','):
+			if n.isdigit():
+				first_list.append(int(n))
+
+	second_list = []	
+	for k in second.split():
+		for n in k.split(','):
+			if n.isdigit():
+				second_list.append(int(n))
+	pos = work_with_number(second_list)
+	connect_dot(pos)
+
+def work_with_number(l):
+	l1 = [l[k] for k in range(0, len(l), 2)]
+	l2 = [l[k] for k in range(1, len(l), 2)]
+
+	pos = zip(l1, l2)
+	return pos
+
+def connect_dot(t):
+	fig = plt.figure()
+	x, y = zip(*t)
+	i0 = x[0]
+	j0 = y[0]
+	for i, j in t:
+		plt.plot([i0,i], [j0, j])
+		i0 = i
+		j0 = j
+	
+	plt.show()	
+q10_good()
+
