@@ -253,5 +253,19 @@ def connect_dot(t):
 		j0 = j
 	
 	plt.show()	
-q10_good()
 
+def q11_bull():
+	print fib(28)
+
+def fib(n):
+	n0 = 1
+	n1 = 1
+	if n == 0:
+		return n0
+	elif n == 1:
+		return n1
+	else:
+		return fib(n-1)+fib(n-2)
+		
+
+q11_bull()
