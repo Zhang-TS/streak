@@ -279,6 +279,41 @@ def look_and_say(s):
 	return 	new_s
 
 def q12_oddeven():
-	print "odd even problem"
+	img = Image.open('cave.jpg')
+	even = Image.new('RGB', img.size)
+	odd = Image.new('RGB', img.size)
 
-q12_oddeven()
+	for x in range(0, img.size[0], 2):
+		for y in range(0, img.size[1], 2):
+			even.putpixel((x,y), img.getpixel((x, y)))
+			odd.putpixel((x,y), img.getpixel((x+1, y+1)))
+
+	even = even.resize((img.size[0]/2, img.size[1]/2))
+	odd = odd.resize((img.size[0]/2, img.size[1]/2))
+
+	even.save('even.jpg')
+	odd.save('odd.jpg')
+	
+def q13_evil():
+	evil = open('evil2.gfx', 'rb').read()
+	img1 = open('img1.jpg', 'w')
+	img2 = open('img2.jpg', 'w')
+	img3 = open('img3.jpg', 'w')
+	img4 = open('img4.jpg', 'w')
+	img5 = open('img5.jpg', 'w')
+
+	for b in range(0, len(evil), 5):
+		img1.write(evil[b])
+		img2.write(evil[b+1])
+		img3.write(evil[b+2])
+		img4.write(evil[b+3])
+		img5.write(evil[b+4])
+
+	img1.close()
+	img2.close()
+	img3.close()
+	img4.close()
+	img5.close()
+				
+				
+q13_evil()
