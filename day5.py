@@ -255,17 +255,30 @@ def connect_dot(t):
 	plt.show()	
 
 def q11_bull():
-	print fib(28)
+	s = '1'
+	for i in range(1, 31):
+		s = look_and_say(s)
+		print i, len(s)
 
-def fib(n):
-	n0 = 1
-	n1 = 1
-	if n == 0:
-		return n0
-	elif n == 1:
-		return n1
-	else:
-		return fib(n-1)+fib(n-2)
-		
+def look_and_say(s):
+	#append a sential value indicating the end of string
+	s += 'e'
+	t = ''
+	p = s[0]
+	new_s = ''
 
-q11_bull()
+	for a in s:
+		if not a == p:
+			counter = len(t)
+			new_s = new_s + str(counter) + t[0]
+			t = ''
+			
+		t += a
+		p = a
+
+	return 	new_s
+
+def q12_oddeven():
+	print "odd even problem"
+
+q12_oddeven()
