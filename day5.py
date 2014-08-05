@@ -9,6 +9,7 @@ import numpy as np
 import zipfile
 import os.path
 import bz2
+import matplotlib.pyplot as plt
 
 def q3_orc():
 	response = urllib2.urlopen("http://www.pythonchallenge.com/pc/def/ocr.html")
@@ -199,4 +200,120 @@ def q9_integrity():
 	print bz2.decompress(name)
 	print bz2.decompress(pas)
 
-q9_integrity()
+def q10_good():
+	url = "http://www.pythonchallenge.com/pc/return/good.html"
+	username='huge'
+	password='file'
+	p = urllib2.HTTPPasswordMgrWithDefaultRealm()
+
+	p.add_password(None, url, username, password)
+
+	handler = urllib2.HTTPBasicAuthHandler(p)
+	opener = urllib2.build_opener(handler)
+	urllib2.install_opener(opener)
+
+	response = urllib2.urlopen(url)
+	page_source = response.read()
+	page_source = page_source.split('first:')[1]
+
+	page_source = page_source.split('second:')
+	first = page_source[0]
+	second = page_source[1]
+
+	#store the numbers
+	first_list = []	
+	for k in first.split():
+		for n in k.split(','):
+			if n.isdigit():
+				first_list.append(int(n))
+
+	second_list = []	
+	for k in second.split():
+		for n in k.split(','):
+			if n.isdigit():
+				second_list.append(int(n))
+	pos = work_with_number(second_list)
+	connect_dot(pos)
+
+def work_with_number(l):
+	l1 = [l[k] for k in range(0, len(l), 2)]
+	l2 = [l[k] for k in range(1, len(l), 2)]
+
+	pos = zip(l1, l2)
+	return pos
+
+def connect_dot(t):
+	fig = plt.figure()
+	x, y = zip(*t)
+	i0 = x[0]
+	j0 = y[0]
+	for i, j in t:
+		plt.plot([i0,i], [j0, j])
+		i0 = i
+		j0 = j
+	
+	plt.show()	
+
+def q11_bull():
+	s = '1'
+	for i in range(1, 31):
+		s = look_and_say(s)
+		print i, len(s)
+
+def look_and_say(s):
+	#append a sential value indicating the end of string
+	s += 'e'
+	t = ''
+	p = s[0]
+	new_s = ''
+
+	for a in s:
+		if not a == p:
+			counter = len(t)
+			new_s = new_s + str(counter) + t[0]
+			t = ''
+			
+		t += a
+		p = a
+
+	return 	new_s
+
+def q12_oddeven():
+	img = Image.open('cave.jpg')
+	even = Image.new('RGB', img.size)
+	odd = Image.new('RGB', img.size)
+
+	for x in range(0, img.size[0], 2):
+		for y in range(0, img.size[1], 2):
+			even.putpixel((x,y), img.getpixel((x, y)))
+			odd.putpixel((x,y), img.getpixel((x+1, y+1)))
+
+	even = even.resize((img.size[0]/2, img.size[1]/2))
+	odd = odd.resize((img.size[0]/2, img.size[1]/2))
+
+	even.save('even.jpg')
+	odd.save('odd.jpg')
+	
+def q13_evil():
+	evil = open('evil2.gfx', 'rb').read()
+	img1 = open('img1.jpg', 'w')
+	img2 = open('img2.jpg', 'w')
+	img3 = open('img3.jpg', 'w')
+	img4 = open('img4.jpg', 'w')
+	img5 = open('img5.jpg', 'w')
+
+	for b in range(0, len(evil), 5):
+		img1.write(evil[b])
+		img2.write(evil[b+1])
+		img3.write(evil[b+2])
+		img4.write(evil[b+3])
+		img5.write(evil[b+4])
+
+	img1.close()
+	img2.close()
+	img3.close()
+	img4.close()
+	img5.close()
+				
+				
+q13_evil()
