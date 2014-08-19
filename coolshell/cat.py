@@ -14,47 +14,11 @@ with open("./cat2_text.txt", "r") as rfile:
 s = page_source[0:5]
 slist = []
 
-def exactly(s):
-	if s[0:2] == "XY" and s[3:5] == "YX":
-		return True
-	if s[0:2] == "56" and s[3:5] == "65":
-		return True
-	if s[0:2] == "Z8" and s[3:5] == "8Z":
-		return True
-	if s[0] == "X" and s[4] == "X" and s[1] == s[3]:
-		return True
-	if s[0] == "5" and s[4] == "5" and s[1] == s[3]:
-		return True
-	if s[0] == "Z" and s[4] == "Z" and s[1] == s[3]:
-		return True
-	if s[0] == "S" and s[4] == "S" and s[1] == s[3]:
-		return True
-	if s[0] == "C" and s[4] == "C" and s[1] == s[3]:
-		return True
-	return False
-
 def exactly2(s):
 	if s[0] == s[4] and s[1] == s[3]:
 		return True
 	else:
 		return False	
-
-def check_url(s):
-	url="fun.coolshell.cn"
-	path = "/"+ s +".html"
-
-	try:
-		conn = httplib.HTTPConnection(url)
-		conn.request("HEAD", path)
-		if conn.getresponse().status == 200:
-			print s
-			print "ok"
-			return True
-	except StandardError:
-		pass
-	
-
-	return False
 
 
 def regular(s):
